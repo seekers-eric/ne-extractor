@@ -14,7 +14,7 @@ from sklearn.externals import joblib
 class TfidfModel:
     def __init__(self):
         self.training_path = './training_data/tfidf_training_data.txt'
-        self.model_path = './model/tfidf.pkl'
+        self.model_path = './model/tfidf_n.pkl'
         self.tagger = ner.SocketNER(host='localhost', port=8080)
         self.stop_words = set(nltk.corpus.stopwords.words('english'))
         self.stemmer = nltk.PorterStemmer()
@@ -57,12 +57,3 @@ class TfidfModel:
                 joblib.dump(tfidf, self.model_path)
 
         return tfidf
-
-tfidf = TfidfModel()
-model = tfidf.get_tfidf_model()
-text = 'Rather than Alphabet Inc Facebook or Microsoft increasingly Chinese duo Alibaba and Tencent are the driving forces behind the importing of large sums of capital and vast business experience into Southeast Asia’s most promising startups'.lower()
-response = model.transform([text])
-print(response)
-feature_names = model.get_feature_names()
-for col in response.nonzero()[1]:
-    print(feature_names[col], ' - ', response[0, col])
